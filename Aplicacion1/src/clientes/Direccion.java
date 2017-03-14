@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Direccion implements Serializable{	//Atributo de la clase Cliente
 	
+	private static final long serialVersionUID = -833430712788765267L;
+	
 	//Atributos
 	private String CP;
 	private String poblacion;

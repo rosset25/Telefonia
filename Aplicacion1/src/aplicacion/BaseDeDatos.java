@@ -16,18 +16,19 @@ import clientes.Cliente;
 import clientes.Tarifa;
 import factura_llamada.Factura;
 import factura_llamada.Llamada;
-import vista.Generica;
-import vista.OperacionesBDyP;
+import gestion.Generica;
+import gestion.OperacionesBDyP;
 
 public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 	
-	//AÑADIR LISTAS, HACER CLASES GENÉRICAS (aparte de la obligatoria la de add cualquier cosa) aplicaciooooooooooon
+	//AÑADIR LISTAS, HACER CLASES GENÉRICAS (aparte de la obligatoria la de add cualquier cosa) 
 	
 	//AÑADIR a los métodos las comprobaciones necesarias
 	
 	//FALTAN AÃ‘ADIR NUEVOS MÃ‰TODOS
 	
-	private static final long serialVersionUID = -3974046000202607815L;
+	private static final long serialVersionUID = -3974046000202607815L; 
+	
 	//variables estáticas mejor?
 	private TreeMap<String,Cliente> listaClientes;  
 	private TreeMap<Long,Factura> listaFacturas;
@@ -135,7 +136,7 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 			
 		/*Se pide LinkedList como parámetro, ya que así podremos imprimir cualquier lista de
 		 *clientes con la condición que queramos*/
-		if (! lista.isEmpty()) {
+		if (! lista.isEmpty()) {	// <-----TODO EXCEPCIÓN!
 			StringBuilder sb = new StringBuilder();
 			sb.append("   LISTA CLIENTES:   \n");
 			sb.append("______________________\n\n\n");
@@ -176,6 +177,11 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 		}
 		return "El cliente no tiene llamadas \n\n";
 	}
+	
+	@Override
+	public void setListaLlamadas(String DNI, LinkedList lista) {
+		this.listaLlamadasDeClientes.put(DNI, lista);
+	}
 	/*fin de las acciones para llamadas*/
 	////////////////////////////////////////
 	
@@ -183,9 +189,13 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 	/*Operaciones FACTURAS*/
 	@Override
 	public Factura getFactura(long ID) {
-		return listaFacturas.get(ID);
+		return listaFacturas.get(ID);	//TODO poner la ID en el validador genérico existe()
 	}
 
+	@Override
+	public TreeMap getListaFacturas(String DNI) {
+		return listaFacturas;
+	}
 	
 	@Override
 	public void addFactura(Factura factura) {
@@ -194,8 +204,10 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 //		ListaFacuturasDeClientes.put(factura.getDNI(),)
 	}
 
-
-	
+	@Override
+	public void setListaFacturas(String DNI, LinkedList lista) {
+		
+	}
 
 	
 

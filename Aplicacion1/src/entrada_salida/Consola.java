@@ -1,4 +1,4 @@
-package vista;
+package entrada_salida;
 
 import java.util.Scanner;
 
@@ -35,14 +35,14 @@ public class Consola implements Input,Output {	//  Output<> <-- Consola --> Inpu
 	public int leerInt() {	//Lee un entero
 							/* Por el momento no lo usamos, 
 							pero está por si acaso tuviéramos que leer un entero */
-		int numero = scanner.nextInt();
+		int numero = scanner.nextInt();	//TODO lanzar excepci�n
 		scanner.nextLine();	//Por si acaso se queda sin leer \n
 		return numero;
 	}
 
 	@Override
 	public double leerDouble() {	//Lee un número en coma flotante
-		double numero = scanner.nextDouble();
+		double numero = scanner.nextDouble();	//TODO lanzar excepcion
 		scanner.nextLine();	//Por si acaso se queda sin leer \n
 		return numero;
 	}

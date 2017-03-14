@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class Particular extends Cliente{	//Clase Hijo
 	
+	private static final long serialVersionUID = 6170137852616540159L;
+	
 	//Atributos
 	
 	private String apellidos;	//sólo una atributo más que Cliente

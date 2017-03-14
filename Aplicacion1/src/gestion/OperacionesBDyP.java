@@ -1,4 +1,4 @@
-package vista;
+package gestion;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,13 +29,14 @@ public interface OperacionesBDyP extends Generica {
 	public void addLlamada(Llamada llamada);
 	public TreeMap getListaLlamadas();
 	public String toStringListaLlamadas(LinkedList llamadas);
-	
+	public void setListaLlamadas(String DNI, LinkedList lista);
 	///////////////////////////////////
 	
 	/*Para las facturas*/
-	
+	public TreeMap getListaFacturas(String DNI);
 	public Factura getFactura(long ID);
 	public void addFactura(Factura f);
+	public void setListaFacturas(String DNI, LinkedList lista);
 
 	
 

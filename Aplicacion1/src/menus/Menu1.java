@@ -3,12 +3,12 @@ package menus;
 public enum Menu1{
 	
 	NUEVO_CLIENTE("Dar de alta a un nuevo cliente"),
-	BORRAR_CLIENTE(" Borrar un cliente"),
+	BORRAR_CLIENTE("Borrar un cliente"),
 	CAMBIAR_TARIFA("Cambiar la tarifa de un cliente"),
 	RECUPERAR_DATOS("Recuperar los datos de un cliente"),
 	RECUPERAR_CLIENTES("Recuperar listado de todos los clientes"),
 	LISTADO_CLIENTES_FECHAS("Listado de clientes que fueron dados de alta entre dos fechas"),
-	ANTERIOR("Volver al menÃº anterior"),
+	ANTERIOR("Volver al menú anterior"),
 	SALIR("Salir");
 
 	private String descripcion;

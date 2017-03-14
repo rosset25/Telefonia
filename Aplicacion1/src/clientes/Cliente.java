@@ -16,6 +16,11 @@ public abstract class Cliente implements Fechador, Serializable{	//Clase Padre, 
 	
 	//Atributos
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 121967387945066632L;
+	
 	private String DNI;
 	private String nombre;
 	private Direccion direccion;

@@ -6,7 +6,7 @@ public enum Menu3 {
 	CODIGO(" Recuperar datos de una factura a partir de su código"),
 	FACTURA_CLIENTE("Recuperar todas las facturas de un cliente"),
 	LISTADO_FACTURAS_FECHAS("Listado de facturas de un cliente emitidas entre dos fechas"),
-	ANTERIOR("Volver al menú anterior"),
+	ANTERIOR("Volver al men� anterior"),
 	SALIR("Salir");
 	
 	private String descripcion;

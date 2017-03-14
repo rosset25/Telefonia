@@ -1,4 +1,4 @@
-package vista;		//TODO Repasar la clase, tratar excepciones, creo que no hace falta Serializable
+package gestion;		//TODO Repasar la clase, tratar excepciones, creo que no hace falta Serializable
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +13,8 @@ import clientes.Direccion;
 import clientes.Empresa;
 import clientes.Particular;
 import clientes.Tarifa;
+import entrada_salida.Input;
+import entrada_salida.Output;
 import factura_llamada.Factura;
 import factura_llamada.Llamada;
 import menus.Menu0;
@@ -22,8 +24,10 @@ import menus.Menu3;
 
 public class Principal implements Serializable{
 
-	//Atributos
+	private static final long serialVersionUID = 1478217409153240166L;
 	
+	//Atributos
+
 	private Input entrada; //entrada de datos
 	private Output salida; //salida de datos
 	private OperacionesBDyP operaciones;   /* Interfaz que relaciona Principal con la BaseDeDatos */
@@ -56,7 +60,7 @@ public class Principal implements Serializable{
 	}
 	//////////////////////
 	
-	public LocalDateTime crearFecha(String fecha) {	//TODO Crear EXCEPCIÓN
+	public LocalDateTime crearFecha(String fecha) {	//TODO lanzar EXCEPCIÓN
 		String[] f = fecha.split("/");	
 		LocalDateTime ff = LocalDateTime.of(Integer.parseInt(f[0]),Integer.parseInt(f[1]),Integer.parseInt(f[2]),0,0,0);
 		return ff;
@@ -106,9 +110,18 @@ public class Principal implements Serializable{
 				cliente = new Particular(DNI, nombre, direccion, tarifa, e_mail, apellidos);
 			}else {	//Si es una empresa
 				cliente = new Empresa(DNI, nombre, direccion, tarifa, e_mail);
-			}	
-		
+			}
+			
+			if (! operaciones.existe(DNI, operaciones.getListaFacturas(DNI))) {
+				LinkedList<Factura> facturas = new LinkedList<Factura>();
+				operaciones.setListaLlamadas(DNI);
+				LinkedList<Llamada> llamadas = new LinkedList<Llamada>();
+				operaciones.setListaFacturas(DNI);
+			}
+			
 			operaciones.addCliente(cliente, DNI); //Añadiendo el DNI se pierde menos tiempo
+			 TreeMap<String,LinkedList<Factura>> listaFacturasDeClientes; 
+			TreeMap<String,LinkedList<Llamada>> listaLlamadasDeClientes;
 			salida.mostrarString("Cliente añadido \n");	//Se le pasa por valor una única vez
 		}
 	}
@@ -145,8 +158,20 @@ public class Principal implements Serializable{
 			salida.mostrarString("No se pudo realizar la operación");
 		}
 	}
+	///////////////////////////////////
+	
+	//Creación FACTURAS
+	public void crearFactura() {
+		String DNI = pedirDatos("DNI del cliente: ");
+		if (operaciones.existe(DNI, operaciones.getListaFacturas(DNI))) {
+			Cliente cliente = operaciones.getCliente(DNI);
+			
+		}
+	}
 	
 	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public void iniciar() {	//Iniciamos el menú principal con las tres opciones	
 			//TODO HACER EXCEPCIÓN: tanto en este menú como en los demás si no has inicializado la entrada, 
@@ -161,7 +186,7 @@ public class Principal implements Serializable{
 				opcion = entrada.leerInt();	//TODO Tratar EXCEPCIÓN
 				Menu0 opcionMenu = Menu0.getOpcion(opcion);	
 				
-				switch(opcionMenu) {	//En Try habrá que obligarle a que vuelva a elegir
+				switch(opcionMenu) {	//TODO En Try habrá que obligarle a que vuelva a elegir
 					case CLIENTES:
 						opcion1();
 						break; 
@@ -189,7 +214,7 @@ public class Principal implements Serializable{
 	//CLIENTES
 	public void opcion1() {
 		
-		while (salir == false) {
+		while (! salir) {
 					
 			salida.mostrarString(Menu1.getMenu1());
 			opcion = entrada.leerInt();	//TODO Tratar excepción
@@ -212,8 +237,8 @@ public class Principal implements Serializable{
 				case CAMBIAR_TARIFA:
 					DNI = pedirDatos("Introduce DNI del cliente: ");	
 					if (operaciones.existe(DNI,listaClientes)) {
-						Double EurMin = pedirDatosDouble("Nueva tarifa deseada (€/min): ");
-						tarifa = new Tarifa(EurMin);	//TODO tratar EXCEPCIÓN (double con ,)
+						Double EurMin = pedirDatosDouble("Nueva tarifa deseada (€/min): "); //TODO tratar EXCEPCIÓN (double con ,)
+						tarifa = new Tarifa(EurMin);	
 						operaciones.setTarifaCliente(operaciones.getCliente(DNI), tarifa);
 					}else {
 						salida.mostrarString("No es posible realizar esta operación");
@@ -258,15 +283,14 @@ public class Principal implements Serializable{
 	//LLAMADAS	
 	public void opcion2() {
 		
-		while (salir == false) {
+		while (! salir) {
 			
 			salida.mostrarString(Menu2.getMenu2());
 			opcion = entrada.leerInt();	//TODO Tratar excepción
 			Menu2 opcionMenu = Menu2.getOpcion(opcion);
 			
+			TreeMap listaLlamadas = operaciones.getListaLlamadas();;
 			String DNI;
-			Cliente cliente;
-			TreeMap listaLlamadas = operaciones.getListaLlamadas(); 
 			
 			switch(opcionMenu) {
 				case NUEVA_LLAMADA: 
@@ -274,18 +298,21 @@ public class Principal implements Serializable{
 					break;
 			
 				case LLAMADAS:
+					//listaLlamadas= operaciones.getListaLlamadas();
 					DNI = pedirDatos("Introduce DNI del cliente: ");	//Se pueden imprimir las llamadas 
-					if (operaciones.existe(DNI, listaLlamadas)) {				//de clientes ya dados de baja
-						LinkedList lista = operaciones.recuperarLista(operaciones.getListaLlamadas());
+					if (operaciones.existe(DNI, listaLlamadas)) {
+						salida.mostrarString("estoy aquí");//de clientes ya dados de baja
+						LinkedList lista = operaciones.recuperarLista(listaLlamadas);
 						salida.mostrarString(operaciones.toStringListaLlamadas(lista));
 					}
 						break;
 					
 				case LISTADO_LLAMADAS_FECHAS:
-					//TODO crear EXCEPCIÓN
+					//TODO tratar EXCEPCIÓN
+					//listaLlamadas= operaciones.getListaLlamadas();
 					salida.mostrarString("Período: "); 
 					String fecha = pedirDatos("Fecha inicio (AAAA/MM/DD): ");
-					LocalDateTime fechaInicio = crearFecha(fecha); 
+					LocalDateTime fechaInicio = crearFecha(fecha); //se lanza arriba la excepción y se trata aquí
 					fecha = pedirDatos("Fecha fin (AAAA/MM/DD): ");
 					LocalDateTime fechaFin = crearFecha(fecha); 
 					LinkedList lista = operaciones.recuperarEntreFechas(listaLlamadas, fechaInicio, fechaFin);
@@ -300,7 +327,7 @@ public class Principal implements Serializable{
 					break;
 					
 				default:
-					salida.mostrarString("OpciÃ³n no vÃ¡lida");
+					salida.mostrarString("Opción no válida");
 			}
 			
 		}
@@ -310,64 +337,73 @@ public class Principal implements Serializable{
 	
 	public void opcion3() {
 		
-//		while (salir == false) {
-//			
-//			salida.mostrarString(Menu3.getMenu3());
-//			opcion = entrada.leerInt();	//TODO Tratar excepción
-//			Menu3 opcionMenu = Menu3.getOpcion(opcion);
-//			
-//			String DNI;
-//			Cliente cliente;
-//			long ID;
-//			Factura factura;	
-//			
-//			switch(opcion) {
-//			
-//				case NUEVA_FACTURA:
-//					DNI = pedirDatos("DNI del cliente: ");
-//					cliente = operaciones.getCliente(DNI);
-//					salida.mostrarString("PerÃ­odo: "); 
-//					salida.mostrarString("Fecha inicio (AAAA/MM/DD): ");
-//					String fecha = entrada.leerString();
-//					LocalDateTime fechaInicio = crearFecha(fecha); 
-//					salida.mostrarString("Fecha fin (AAAA/MM/DD): ");
-//					fecha = entrada.leerString();
-//					LocalDateTime fechaFin = crearFecha(fecha); 
-//					factura = new Factura(cliente, fechaInicio, fechaFin);
-//					operaciones.addFactura(factura);
-//					cliente.addFactura(factura);
-//					break;
-//					
-//				case CODIGO:
-//					salida.mostrarString("ID de la factura: ");
-//					ID = entrada.leerLong();
-//					factura = operaciones.getFactura(ID);
-//					if (factura != null) {
-//						salida.mostrarString(factura.toStringFactura());						
-//					}
-//					break;
-//					
-//				case FACTURA_CLIENTE:
-//					DNI = pedirDNI();
-//					cliente = operaciones.getCliente(DNI);
-//					cliente.toStringFacturas();  //AQUIII
-//					break;
-//					
-//				case LISTADO_FACTURA_FECHAS:
-//					
-//				case ANTERIOR:
-//					iniciar();
-//					break;
-//					
-//				case SALIR:
-//					salir();
-//					
-//				default:
-//					salida.mostrarString("OpciÃ³n no vÃ¡lida");
-//						
-//			}
-//	
-//		}
+//		NUEVA_FACTURA("Emitir factura para un cliente"),
+//		CODIGO(" Recuperar datos de una factura a partir de su cÃ³digo"),
+//		FACTURA_CLIENTE("Recuperar todas las facturas de un cliente"),
+//		LISTADO_FACTURAS_FECHAS("Listado de facturas de un cliente emitidas entre dos fechas"),
+//		ANTERIOR("Volver al menú anterior"),
+//		SALI
+		
+		while (! salir) {
+			
+			salida.mostrarString(Menu3.getMenu3());
+			opcion = entrada.leerInt();	//TODO Tratar excepción
+			Menu3 opcionMenu = Menu3.getOpcion(opcion);
+			
+			String DNI;
+			Cliente cliente;
+			long ID;
+			Factura factura;	
+			
+			switch(opcionMenu) {
+			
+				case NUEVA_FACTURA:
+					crearFactura();
+					
+					DNI = pedirDatos("DNI del cliente: ");
+					cliente = operaciones.getCliente(DNI);
+					salida.mostrarString("PerÃ­odo: "); 
+					salida.mostrarString("Fecha inicio (AAAA/MM/DD): ");
+					String fecha = entrada.leerString();
+					LocalDateTime fechaInicio = crearFecha(fecha); 
+					salida.mostrarString("Fecha fin (AAAA/MM/DD): ");
+					fecha = entrada.leerString();
+					LocalDateTime fechaFin = crearFecha(fecha); 
+					factura = new Factura(cliente, fechaInicio, fechaFin);
+					operaciones.addFactura(factura);
+					cliente.addFactura(factura);
+					break;
+					
+				case CODIGO:
+					salida.mostrarString("ID de la factura: ");
+					ID = entrada.leerLong();
+					factura = operaciones.getFactura(ID);
+					if (factura != null) {
+						salida.mostrarString(factura.toStringFactura());						
+					}
+					break;
+					
+				case FACTURA_CLIENTE:
+					DNI = pedirDNI();
+					cliente = operaciones.getCliente(DNI);
+					cliente.toStringFacturas();  //AQUIII
+					break;
+					
+				case LISTADO_FACTURA_FECHAS:
+					
+				case ANTERIOR:
+					iniciar();
+					break;
+					
+				case SALIR:
+					salir();
+					
+				default:
+					salida.mostrarString("OpciÃ³n no vÃ¡lida");
+						
+			}
+	
+		}
 	
 	}
 	

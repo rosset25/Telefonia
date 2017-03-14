@@ -1,4 +1,4 @@
-package vista;
+package entrada_salida;
 
 public interface Input {
 	

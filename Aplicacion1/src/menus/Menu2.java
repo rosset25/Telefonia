@@ -6,7 +6,7 @@ public enum Menu2 {
 	NUEVA_LLAMADA("Dar de alta una llamada"),
 	LLAMADAS("Realizar un listado de llamdas de un cliente"),
 	LISTADO_LLAMADAS_FECHAS("Listado de llamadas de un cliente que fueron realizadas entre dos fechas"),
-	ANTERIOR("Volver al menÃº anterior"),
+	ANTERIOR("Volver al menú anterior"),
 	SALIR("Salir");
 
 	/*salida.mostrarString(

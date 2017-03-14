@@ -3,7 +3,10 @@ package clientes; //TODO Tarifa done
 import java.io.Serializable;
 import java.util.Date;
 
-public class Tarifa implements Serializable{	//tributo de la clase Cliente
+public class Tarifa implements Serializable{	//Atributo de Cliente
+	
+	private static final long serialVersionUID = -8746672059710964569L;
+		
 	
 	//Atributos
 	private double eurMin;
@@ -25,7 +28,8 @@ public class Tarifa implements Serializable{	//tributo de la clase Cliente
 	//////////////////////////////////
 	
 	//toString()
-	public String toStringTarifa() {
+	@Override
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.eurMin);
 		return sb.toString();

@@ -1,4 +1,4 @@
-package vista;
+package gestion;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

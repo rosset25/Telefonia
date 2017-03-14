@@ -13,6 +13,8 @@ import java.util.Date;
 
 public class Llamada implements Fechador,Serializable{	
 	
+	private static final long serialVersionUID = 8405567765807015478L;
+	
 	//Atributos
 	private String telefono;
 	private double duracion; 

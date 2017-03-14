@@ -11,8 +11,9 @@ import clientes.Tarifa;
 
 public class Factura implements Fechador,Serializable{
 	
-	//Atributos
+	private static final long serialVersionUID = 5878449934307494739L;
 	
+	//Atributos
 	private static long codigo_siguiente = 33L; //ID del próximo cliente
 	private String DNI;
 	private long ID;
