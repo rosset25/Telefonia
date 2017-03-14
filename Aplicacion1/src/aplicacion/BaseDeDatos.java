@@ -21,7 +21,7 @@ import vista.OperacionesBDyP;
 
 public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 	
-	//AÑADIR LISTAS, HACER CLASES GENÉRICAS (aparte de la obligatoria la de add cualquier cosa)
+	//AÑADIR LISTAS, HACER CLASES GENÉRICAS (aparte de la obligatoria la de add cualquier cosa) aplicaciooooooooooon
 	
 	//AÑADIR a los métodos las comprobaciones necesarias
 	
