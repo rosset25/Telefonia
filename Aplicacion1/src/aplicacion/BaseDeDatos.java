@@ -45,10 +45,9 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 	//métodos GENÉRICOS
 	
 	@Override	//Sacar el período de fechas TODO Hacer excepción, se usará también para saber el período de la factura
-	public <U extends Fechador,T> LinkedList recuperarEntreFechas( TreeMap<T,U> lista, LocalDateTime inicio, LocalDateTime fin) {
-		LinkedList<U> fechasValidas = new LinkedList<U>();
-		LinkedList<U> listaFechasActuales = recuperarLista(lista);
-		for(U dato : listaFechasActuales) {
+	public <T extends Fechador> LinkedList recuperarEntreFechas( LinkedList<T> lista, LocalDateTime inicio, LocalDateTime fin) {
+		LinkedList<T> fechasValidas = new LinkedList<T>();;
+		for(T dato : lista) {
 			LocalDateTime fecha = dato.getFecha();
 			if( fecha.compareTo(inicio) >= 0 && fecha.compareTo(fin) <= 0) {
 				fechasValidas.add(dato);
@@ -67,10 +66,16 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 	//Ésta clase servirá para pasar parámetros para hacer una lista que se vaya a imprimir
 	//Tal vez cambiar en un futuro a HashSet
 	@Override
-	public <U extends Fechador,T> LinkedList<U> recuperarLista(TreeMap<T,U> lista) {
+	public <U extends Fechador,T> LinkedList<U> recuperarLista(TreeMap<T,U> lista) { //Para Clientes y Facturas
 		LinkedList<U> listaADevolver = new LinkedList<U>();
 		listaADevolver.addAll(lista.values());	
 		return listaADevolver; 		
+	}
+	
+	@Override
+	public <V extends Fechador,T,U> LinkedList<V> recuperarListaDeLista(T dato,TreeMap<T,U> lista) {	//Para llamadas y facturas de un cliente
+		LinkedList<V> listaDeLista = (LinkedList<V>) lista.get(dato);
+		return listaDeLista;
 	}
 	
 	private <T extends Fechador> String toStringLista(T tipo, LinkedList<T> lista) {	 
@@ -89,11 +94,11 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 	
 	//Comprobaciones para la inicialización de las listas donde estarán los datos de Llamadas y Facturas
 	private void comprobacionesCreacionCliente(String DNI) {
-		if (existe(DNI,listaLlamadasDeClientes)) {	// Ver si ese cliente estuvo anteriormente dado de alta
+		if (! existe(DNI,listaLlamadasDeClientes)) {	// Ver si ese cliente estuvo anteriormente dado de alta
 			LinkedList llamadas = new LinkedList();		//Se inicializa lista de llamadas (estará vacía)
 			listaLlamadasDeClientes.put(DNI,llamadas); 
 		}	
-		if ( existe(DNI,listaFacturasDeClientes)) {	//Ver si tenía facturas anteriormente
+		if (! existe(DNI,listaFacturasDeClientes)) {	//Ver si tenía facturas anteriormente
 			LinkedList facturas = new LinkedList();			//Si no las tiene se inicializa una
 			listaFacturasDeClientes.put(DNI, facturas);	//lista de facturas (estará vacía) 
 		}
@@ -181,6 +186,7 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 	@Override
 	public void setListaLlamadas(String DNI, LinkedList lista) {
 		this.listaLlamadasDeClientes.put(DNI, lista);
+		System.out.println("Añadida lista de llamadas");
 	}
 	/*fin de las acciones para llamadas*/
 	////////////////////////////////////////
@@ -206,6 +212,7 @@ public class BaseDeDatos implements Generica, OperacionesBDyP, Serializable{
 
 	@Override
 	public void setListaFacturas(String DNI, LinkedList lista) {
+		this.listaFacturasDeClientes.put(DNI, lista);
 		
 	}
 

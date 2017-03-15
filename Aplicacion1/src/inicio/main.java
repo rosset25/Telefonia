@@ -18,24 +18,7 @@ public class main implements Serializable{
 		
 		Inicio inicio = new Inicio();
 		inicio.iniciarPrograma();
-	
-//		BaseDeDatos telefonia = new BaseDeDatos();	//será como nuestra "Base de Datos" y el menú operará con él
-//		Consola consola = new Consola();  //Es la case que implementa la entrada y la salida
-//		Principal menu = new Principal();
-//		
-//		
-//		
-//		/*en vez de crear un menú al que le pasemos los parámetros, 
-//		usamos los sets para "inicializarlo"
-//		*/
-//		
-//		
-//		menu.setInput(consola);	
-//		menu.setOutput(consola);
-//		menu.setOperaciones(telefonia); //con ello ya podemos usar la interfaz sin 
-//		
-//		
-//		menu.iniciar();
+
 		
 	}
 	

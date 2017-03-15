@@ -62,7 +62,7 @@ public class Principal implements Serializable{
 	
 	public LocalDateTime crearFecha(String fecha) {	//TODO lanzar EXCEPCIÓN
 		String[] f = fecha.split("/");	
-		LocalDateTime ff = LocalDateTime.of(Integer.parseInt(f[0]),Integer.parseInt(f[1]),Integer.parseInt(f[2]),0,0,0);
+		LocalDateTime ff = LocalDateTime.of(Integer.parseInt(f[0]),Integer.parseInt(f[1]),Integer.parseInt(f[2]),23,59,59);
 		return ff;
 	}
 	
@@ -112,16 +112,7 @@ public class Principal implements Serializable{
 				cliente = new Empresa(DNI, nombre, direccion, tarifa, e_mail);
 			}
 			
-			if (! operaciones.existe(DNI, operaciones.getListaFacturas(DNI))) {
-				LinkedList<Factura> facturas = new LinkedList<Factura>();
-				operaciones.setListaLlamadas(DNI);
-				LinkedList<Llamada> llamadas = new LinkedList<Llamada>();
-				operaciones.setListaFacturas(DNI);
-			}
-			
 			operaciones.addCliente(cliente, DNI); //Añadiendo el DNI se pierde menos tiempo
-			 TreeMap<String,LinkedList<Factura>> listaFacturasDeClientes; 
-			TreeMap<String,LinkedList<Llamada>> listaLlamadasDeClientes;
 			salida.mostrarString("Cliente añadido \n");	//Se le pasa por valor una única vez
 		}
 	}
@@ -289,7 +280,7 @@ public class Principal implements Serializable{
 			opcion = entrada.leerInt();	//TODO Tratar excepción
 			Menu2 opcionMenu = Menu2.getOpcion(opcion);
 			
-			TreeMap listaLlamadas = operaciones.getListaLlamadas();;
+			TreeMap listaLlamadas = operaciones.getListaLlamadas();
 			String DNI;
 			
 			switch(opcionMenu) {
@@ -300,23 +291,26 @@ public class Principal implements Serializable{
 				case LLAMADAS:
 					//listaLlamadas= operaciones.getListaLlamadas();
 					DNI = pedirDatos("Introduce DNI del cliente: ");	//Se pueden imprimir las llamadas 
-					if (operaciones.existe(DNI, listaLlamadas)) {
-						salida.mostrarString("estoy aquí");//de clientes ya dados de baja
-						LinkedList lista = operaciones.recuperarLista(listaLlamadas);
+					
+					if (operaciones.existe(DNI, listaLlamadas)) {	//de clientes ya dados de baja
+						LinkedList lista = operaciones.recuperarListaDeLista(DNI,listaLlamadas);
 						salida.mostrarString(operaciones.toStringListaLlamadas(lista));
 					}
 						break;
 					
 				case LISTADO_LLAMADAS_FECHAS:
-					//TODO tratar EXCEPCIÓN
-					//listaLlamadas= operaciones.getListaLlamadas();
-					salida.mostrarString("Período: "); 
-					String fecha = pedirDatos("Fecha inicio (AAAA/MM/DD): ");
-					LocalDateTime fechaInicio = crearFecha(fecha); //se lanza arriba la excepción y se trata aquí
-					fecha = pedirDatos("Fecha fin (AAAA/MM/DD): ");
-					LocalDateTime fechaFin = crearFecha(fecha); 
-					LinkedList lista = operaciones.recuperarEntreFechas(listaLlamadas, fechaInicio, fechaFin);
-					salida.mostrarString(operaciones.toStringListaLlamadas(lista));
+					DNI = pedirDatos("Introduce DNI del cliente: ");
+					
+					if (operaciones.existe(DNI, listaLlamadas)){
+						salida.mostrarString("Período: "); 
+						String fecha = pedirDatos("Fecha inicio (AAAA/MM/DD): ");	//TODO tratar EXCEPCIÓN
+						LocalDateTime fechaInicio = crearFecha(fecha); //se lanza arriba la excepción y se trata aquí
+						fecha = pedirDatos("Fecha fin (AAAA/MM/DD): ");
+						LocalDateTime fechaFin = crearFecha(fecha); 
+						LinkedList lista = operaciones.recuperarListaDeLista(DNI,listaLlamadas);
+						LinkedList listaFechasLlamadas = operaciones.recuperarEntreFechas(lista, fechaInicio, fechaFin);
+						salida.mostrarString(operaciones.toStringListaLlamadas(listaFechasLlamadas));
+					}
 					break;
 					
 				case ANTERIOR:

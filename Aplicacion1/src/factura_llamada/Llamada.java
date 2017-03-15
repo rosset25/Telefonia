@@ -57,14 +57,15 @@ public class Llamada implements Fechador,Serializable{
 	//////////////////////////////////////////
 	
 	//toString()
-	public String toStringLlamada() {
+	@Override
+	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("-- LLAMADA --\n");
 		sb.append("_____________\n\n");
 		sb.append("	DNI del cliente: " + this.DNI + "\n");
 		sb.append("	Teléfono que realizó la llamada: " + this.telefono + "\n");
 		sb.append("	Fecha y hora de la llamada: " + this.fechaLlamada.toString() + "\n");
-		sb.append("	Duración: " + this.duracion + "\n");		
+		sb.append("	Duración: " + this.duracion + " minutos" + "\n");		
 		return sb.toString();
 	}
 	//////////////////////////////////
