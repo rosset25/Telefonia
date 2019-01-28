@@ -1,6 +1,6 @@
-# Telefonia
+# Aplicación Telefonía
 
-*Programación Avanzada (EI20__) - 2 curso
+*(Asignatura Programación Avanzada)*
 
 Esta es una pequeña aplicación de java desarrollada durante la asignatura Programación Avanzada. Contiene varias funcionalidades, 
 como dar de alta a un cliente, borrarlo, ver sus las facturas, etc. 
